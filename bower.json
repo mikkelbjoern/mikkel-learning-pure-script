@@ -6,6 +6,8 @@
     "bower_components",
     "output"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "purescript-math": "^2.1.0"
+  },
   "devDependencies": {}
 }
