@@ -2,8 +2,8 @@ module Main where
 
 import Control.Monad.Eff.Console
 
-import Prelude (mod, (+), (-), (==))
-import Data.HeytingAlgebra((||))
+import Data.HeytingAlgebra ((||))
+import Prelude (mod, (+), (-), (==), (>))
 
 
 f:: Int -> Int -> Int
@@ -13,5 +13,24 @@ f x y =
     then f (x+y) (y-1)
     else f x (y-1)
 
+fib:: Int -> Int
+fib 1 = 1
+fib 2 = 2
+fib x = fib (x-1) + fib (x-2)
 
-main = logShow (f 0 999)
+even:: Int -> Boolean
+even x =
+  if x `mod` 2 == 0
+    then true
+    else false
+
+euler2:: Int -> Int -> Int
+euler2 n sum =
+  if fib n > 4000000
+    then sum
+    else
+      if even (fib n)
+        then euler2 (n+1) (sum + fib n)
+        else euler2 (n+1) sum
+
+main = logShow (euler2 1 0)
