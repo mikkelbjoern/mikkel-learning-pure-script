@@ -24,13 +24,13 @@ even x =
     then true
     else false
 
-euler2:: Int -> Int -> Int
-euler2 n sum =
+euler2:: Int -> Int
+euler2 n =
   if fib n > 4000000
-    then sum
+    then 0
     else
       if even (fib n)
-        then euler2 (n+1) (sum + fib n)
-        else euler2 (n+1) sum
+        then euler2 (n+1) + fib n
+        else euler2 (n+1)
 
-main = logShow (euler2 1 0)
+main = logShow (euler2 1)
