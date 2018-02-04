@@ -1,9 +1,15 @@
 module Main where
 
-import Control.Monad.Eff.Console
+import Control.Monad.Eff.Console(logShow)
 
-import Data.HeytingAlgebra ((||))
-import Prelude (mod, (+), (-), (==), (>))
+-- import Data.HeytingAlgebra ((||))
+import Math (sqrt)
+import Prelude(map, mod, (&&), (+), (-), (==), (||), (/))
+import Data.Array(foldl, (..), filter)
+import Data.Int as Int
+import Data.Eq
+import Data.Ord(min, max)
+
 
 
 f:: Int -> Int -> Int
@@ -24,13 +30,23 @@ even x =
     then true
     else false
 
-euler2:: Int -> Int
-euler2 n =
-  if fib n > 4000000
-    then 0
-    else
-      if even (fib n)
-        then euler2 (n+1) + fib n
-        else euler2 (n+1)
+checkList:: Int -> Array Int
+checkList n = 2 .. Int.ceil (sqrt (Int.toNumber n))
 
-main = logShow (euler2 1)
+isPrime:: Int -> Boolean
+isPrime 2 = true
+isPrime p =
+  foldl (&&) true (map (\n -> p `mod` n /= 0) (checkList p))
+
+minPrimeDiv:: Int -> Int
+minPrimeDiv x =
+  foldl min x (filter (\n -> (x `mod` n == 0 && isPrime n)) (checkList x))
+
+biggestPrimeDiv:: Int -> Int
+biggestPrimeDiv x =
+  foldl max 0 (filter (\n -> (x `mod` n == 0 && isPrime n)) (1 .. x))
+
+
+
+-- main:: forall t. Eff ( console :: CONSOLE | t ) Unit
+main = logShow (biggestPrimeDiv 600851475143)
